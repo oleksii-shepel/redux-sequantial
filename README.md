@@ -1,27 +1,11 @@
-# ReduxSequential
+# Sequential Middleware
+Sequential is a higher-order middleware designed for Redux-like stores. It incorporates a locking mechanism to ensure that actions dispatched to the middleware are processed in a sequential manner. This feature is especially crucial when the middleware handles asynchronous operations, as it guarantees the sequential execution of operations, thereby bolstering the predictability and reliability of the state management system.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.2.
+## Workflow
+```Lock Acquisition```: The sequential middleware acquires a lock when an action is dispatched.
+```Middleware Invocation```: The original middleware is invoked with the current action.
+```Lock Release```: The lock is released once the middleware completes its operation, which could be asynchronous.
+```Queue Processing```: If more actions were dispatched while the lock was held, the next promise in the queue is resolved, triggering the middleware for the next action.
+```Repetition```: The above steps are repeated until all dispatched actions have been processed.
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+The sequential approach is particularly beneficial in scenarios where the order of actions is paramount. It ensures that each action is fully processed before the next one is initiated, effectively managing potential race conditions in your Redux store. This results in a more predictable and reliable state management system, making the Redux store robust and dependable. It’s a significant enhancement for complex applications where the sequence and timing of state changes are crucial.
