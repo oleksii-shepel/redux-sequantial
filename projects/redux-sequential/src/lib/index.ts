@@ -32,11 +32,11 @@ export class Lock {
 export function sequential(middleware: any): any {
   const lock = new Lock();
 
-  return ({ dispatch, getState }: any) => (next: any) => async (action: any) => {
+  return (store: any) => (next: any) => async (action: any) => {
     await lock.acquire();
 
     try {
-      await middleware({ dispatch, getState })(next)(action);
+      await middleware(store)(next)(action);
     } finally {
       lock.release();
     }
