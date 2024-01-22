@@ -36,7 +36,7 @@ export function sequential(middleware: any): any {
     await lock.acquire();
 
     try {
-      await middleware(store)(next)(action);
+      middleware(store)(next)(action);
     } finally {
       lock.release();
     }
